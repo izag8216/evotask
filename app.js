@@ -20,21 +20,51 @@ class EvoTaskManager {
             adaptive: []
         };
         
+        // Cache frequently accessed DOM elements
+        this.domCache = {};
+        
         this.init();
     }
 
     // ===== Initialization =====
     init() {
-        this.loadData();
-        this.bindEvents();
-        this.renderDashboard();
-        this.renderTasks();
-        this.startEvolutionCycle();
-        
-        // Initialize insights panel
-        this.initInsightsPanel();
-        
-        console.log('🧬 Evo Task Manager initialized - Evolution begins!');
+        try {
+            this.cacheDOM();
+            this.loadData();
+            this.bindEvents();
+            this.renderDashboard();
+            this.renderTasks();
+            this.startEvolutionCycle();
+            
+            // Initialize insights panel
+            this.initInsightsPanel();
+            
+            console.log('🧬 Evo Task Manager initialized - Evolution begins!');
+        } catch (error) {
+            console.error('Initialization failed:', error);
+            this.handleError('Failed to initialize EvoTask application');
+        }
+    }
+
+    // ===== DOM Caching =====
+    cacheDOM() {
+        this.domCache = {
+            adaptationScore: document.getElementById('adaptationScore'),
+            generationCount: document.getElementById('generationCount'),
+            survivingTasks: document.getElementById('survivingTasks'),
+            eliminatedTasks: document.getElementById('eliminatedTasks'),
+            taskModal: document.getElementById('taskModal'),
+            taskForm: document.getElementById('taskForm'),
+            competitiveTasks: document.getElementById('competitiveTasks'),
+            collaborativeTasks: document.getElementById('collaborativeTasks'),
+            adaptiveTasks: document.getElementById('adaptiveTasks')
+        };
+    }
+
+    // ===== Error Handling =====
+    handleError(message, error = null) {
+        console.error(message, error);
+        this.showNotification(message, 'error');
     }
 
     // ===== Data Management (Local CRUD) =====
@@ -306,23 +336,35 @@ class EvoTaskManager {
 
     // ===== UI Rendering =====
     renderDashboard() {
-        // Update evolution stats
-        document.getElementById('adaptationScore').textContent = `${this.evolutionStats.adaptationScore}%`;
-        document.getElementById('generationCount').textContent = this.currentGeneration;
-        document.getElementById('survivingTasks').textContent = this.evolutionStats.survivingTasks;
-        document.getElementById('eliminatedTasks').textContent = this.evolutionStats.eliminatedTasks;
-        
-        // Update chart bar height
-        const chartBar = document.querySelector('.chart-bar');
-        if (chartBar) {
-            chartBar.style.height = `${this.evolutionStats.adaptationScore}%`;
-        }
-        
-        // Update mutation counts
-        const mutationItems = document.querySelectorAll('.mutation-count');
-        if (mutationItems.length >= 2) {
-            mutationItems[0].textContent = this.evolutionStats.mutationCount.strategy;
-            mutationItems[1].textContent = this.evolutionStats.mutationCount.tactical;
+        try {
+            // Update evolution stats using cached elements
+            if (this.domCache.adaptationScore) {
+                this.domCache.adaptationScore.textContent = `${this.evolutionStats.adaptationScore}%`;
+            }
+            if (this.domCache.generationCount) {
+                this.domCache.generationCount.textContent = this.currentGeneration;
+            }
+            if (this.domCache.survivingTasks) {
+                this.domCache.survivingTasks.textContent = this.evolutionStats.survivingTasks;
+            }
+            if (this.domCache.eliminatedTasks) {
+                this.domCache.eliminatedTasks.textContent = this.evolutionStats.eliminatedTasks;
+            }
+            
+            // Update chart bar height
+            const chartBar = document.querySelector('.chart-bar');
+            if (chartBar) {
+                chartBar.style.height = `${this.evolutionStats.adaptationScore}%`;
+            }
+            
+            // Update mutation counts
+            const mutationItems = document.querySelectorAll('.mutation-count');
+            if (mutationItems.length >= 2) {
+                mutationItems[0].textContent = this.evolutionStats.mutationCount.strategy;
+                mutationItems[1].textContent = this.evolutionStats.mutationCount.tactical;
+            }
+        } catch (error) {
+            this.handleError('Failed to render dashboard', error);
         }
     }
 
@@ -352,37 +394,26 @@ class EvoTaskManager {
         
         container.innerHTML = tasks.map(task => this.createTaskCardHTML(task)).join('');
         
-        // Add event listeners to task cards
-        container.querySelectorAll('.task-card').forEach(card => {
-            const taskId = card.dataset.taskId;
+        // Use event delegation to avoid memory leaks
+        container.removeEventListener('click', this.handleTaskCardClick);
+        this.handleTaskCardClick = (e) => {
+            const taskCard = e.target.closest('.task-card');
+            if (!taskCard) return;
             
-            // Task completion
-            const completeBtn = card.querySelector('.complete-task');
-            if (completeBtn) {
-                completeBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    this.completeTask(taskId);
-                });
-            }
+            const taskId = taskCard.dataset.taskId;
             
-            // Task editing
-            const editBtn = card.querySelector('.edit-task');
-            if (editBtn) {
-                editBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    this.editTask(taskId);
-                });
+            if (e.target.closest('.complete-task')) {
+                e.stopPropagation();
+                this.completeTask(taskId);
+            } else if (e.target.closest('.edit-task')) {
+                e.stopPropagation();
+                this.editTask(taskId);
+            } else if (e.target.closest('.delete-task')) {
+                e.stopPropagation();
+                this.deleteTask(taskId);
             }
-            
-            // Task deletion
-            const deleteBtn = card.querySelector('.delete-task');
-            if (deleteBtn) {
-                deleteBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    this.deleteTask(taskId);
-                });
-            }
-        });
+        };
+        container.addEventListener('click', this.handleTaskCardClick);
     }
 
     createTaskCardHTML(task) {
@@ -404,16 +435,16 @@ class EvoTaskManager {
                         Generation: ${task.generation} | Mutations: ${mutationsText}
                     </small>
                 </div>
-                <div class="task-footer">
-                    <div class="task-adaptation">
-                        <div class="adaptation-bar">
-                            <div class="adaptation-fill" style="width: ${task.adaptationScore}%"></div>
+                <div class="task-meta">
+                    <div class="task-stats">
+                        <div class="stat-item">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Adaptation: ${task.adaptationScore}%</span>
                         </div>
-                        <span class="adaptation-score">${task.adaptationScore}%</span>
-                    </div>
-                    <div class="task-deadline">
-                        <i class="fas fa-clock"></i>
-                        <span>${daysLeft} days</span>
+                        <div class="stat-item">
+                            <i class="fas fa-clock"></i>
+                            <span>${daysLeft} days</span>
+                        </div>
                     </div>
                     <div class="task-actions">
                         <button class="task-action complete-task" title="Complete">
@@ -425,6 +456,11 @@ class EvoTaskManager {
                         <button class="task-action delete-task" title="Delete">
                             <i class="fas fa-trash"></i>
                         </button>
+                    </div>
+                </div>
+                <div class="task-adaptation">
+                    <div class="adaptation-bar">
+                        <div class="adaptation-fill" style="width: ${task.adaptationScore}%"></div>
                     </div>
                 </div>
             </div>
@@ -497,6 +533,13 @@ class EvoTaskManager {
         }
         
         // Insights panel toggle
+        const toggleInsightsFab = document.getElementById('toggleInsightsFab');
+        if (toggleInsightsFab) {
+            toggleInsightsFab.addEventListener('click', () => {
+                this.toggleInsightsPanel();
+            });
+        }
+        
         const toggleInsights = document.getElementById('toggleInsights');
         if (toggleInsights) {
             toggleInsights.addEventListener('click', () => {
@@ -525,29 +568,33 @@ class EvoTaskManager {
             modal.classList.remove('active');
             document.body.style.overflow = '';
             
-            // Reset form
+            // Reset form and all associated displays
             const form = document.getElementById('taskForm');
             if (form) {
                 form.reset();
-                document.querySelector('.range-value').textContent = '50%';
+                
+                // Reset range input display
+                const rangeValue = document.querySelector('.range-value');
+                const adaptationRange = document.getElementById('adaptationScore');
+                if (rangeValue && adaptationRange) {
+                    adaptationRange.value = 50;
+                    rangeValue.textContent = '50%';
+                }
             }
         }
     }
 
     handleTaskSubmission() {
-        const form = document.getElementById('taskForm');
-        const formData = new FormData(form);
-        
         const taskData = {
-            title: formData.get('taskTitle') || document.getElementById('taskTitle').value,
-            description: formData.get('taskDescription') || document.getElementById('taskDescription').value,
-            priority: formData.get('taskPriority') || document.getElementById('taskPriority').value,
-            environment: formData.get('taskEnvironment') || document.getElementById('taskEnvironment').value,
-            deadline: formData.get('taskDeadline') || document.getElementById('taskDeadline').value,
-            adaptationScore: formData.get('adaptationScore') || document.getElementById('adaptationScore').value
+            title: document.getElementById('taskTitle').value.trim(),
+            description: document.getElementById('taskDescription').value.trim(),
+            priority: document.getElementById('taskPriority').value,
+            environment: document.getElementById('taskEnvironment').value,
+            deadline: document.getElementById('taskDeadline').value,
+            adaptationScore: document.getElementById('adaptationScore').value
         };
         
-        // Validation
+        // Enhanced validation
         if (!taskData.title.trim()) {
             this.showNotification('Please enter a task name', 'error');
             return;
@@ -555,6 +602,21 @@ class EvoTaskManager {
         
         if (!taskData.deadline) {
             this.showNotification('Please set an adaptation deadline', 'error');
+            return;
+        }
+        
+        // Validate deadline is not in the past
+        const deadlineDate = new Date(taskData.deadline);
+        const today = new Date();
+        if (deadlineDate < today) {
+            this.showNotification('Deadline cannot be in the past', 'error');
+            return;
+        }
+        
+        // Validate adaptation score range
+        const adaptationScore = parseInt(taskData.adaptationScore);
+        if (isNaN(adaptationScore) || adaptationScore < 0 || adaptationScore > 100) {
+            this.showNotification('Adaptation score must be between 0 and 100', 'error');
             return;
         }
         
@@ -662,7 +724,7 @@ class EvoTaskManager {
                     <h4>${insight.title}</h4>
                     <p>${insight.description}</p>
                     <div class="insight-action">
-                        <small class="insight-confidence">信頼度: ${insight.confidence}%</small>
+                        <small class="insight-confidence">Confidence: ${insight.confidence}%</small>
                     </div>
                 </div>
             `).join('');
