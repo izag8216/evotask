@@ -76,8 +76,8 @@ class EvoTaskManager {
         const sampleTasks = [
             {
                 id: this.generateId(),
-                title: 'マーケット適応戦略',
-                description: '競争環境での生存に必要な戦略的変異を実装',
+                title: 'Market Adaptation Strategy',
+                description: 'Implement strategic mutations necessary for survival in competitive environments',
                 priority: 'high',
                 environment: 'competitive',
                 adaptationScore: 92,
@@ -89,8 +89,8 @@ class EvoTaskManager {
             },
             {
                 id: this.generateId(),
-                title: 'パートナーシップ共進化',
-                description: '相互利益による協調的進化プロセスの構築',
+                title: 'Partnership Co-evolution',
+                description: 'Build collaborative evolution process through mutual benefits',
                 priority: 'medium',
                 environment: 'collaborative',
                 adaptationScore: 78,
@@ -102,8 +102,8 @@ class EvoTaskManager {
             },
             {
                 id: this.generateId(),
-                title: 'イノベーション変異実験',
-                description: '新しい市場ニッチへの適応実験',
+                title: 'Innovation Mutation Experiment',
+                description: 'Adaptation experiment to new market niches',
                 priority: 'low',
                 environment: 'adaptive',
                 adaptationScore: 65,
@@ -343,8 +343,8 @@ class EvoTaskManager {
             container.innerHTML = `
                 <div class="empty-environment">
                     <i class="fas fa-seedling"></i>
-                    <p>この環境にはまだタスクが進化していません</p>
-                    <small>新しいタスクを作成して進化を開始しましょう</small>
+                    <p>No tasks have evolved in this environment yet</p>
+                    <small>Create new tasks to begin evolution</small>
                 </div>
             `;
             return;
@@ -389,7 +389,7 @@ class EvoTaskManager {
         const priorityClass = `priority-${task.priority}`;
         const daysLeft = this.getDaysUntilDeadline(task.deadline);
         const mutationsText = task.mutations.length > 0 ? 
-            task.mutations.slice(-2).join(', ') : '基本形態';
+            task.mutations.slice(-2).join(', ') : 'Basic Form';
         
         return `
             <div class="task-card" data-task-id="${task.id}">
@@ -401,7 +401,7 @@ class EvoTaskManager {
                 <div class="task-evolution-info">
                     <small class="evolution-detail">
                         <i class="fas fa-dna"></i>
-                        世代: ${task.generation} | 変異: ${mutationsText}
+                        Generation: ${task.generation} | Mutations: ${mutationsText}
                     </small>
                 </div>
                 <div class="task-footer">
@@ -413,16 +413,16 @@ class EvoTaskManager {
                     </div>
                     <div class="task-deadline">
                         <i class="fas fa-clock"></i>
-                        <span>${daysLeft}日</span>
+                        <span>${daysLeft} days</span>
                     </div>
                     <div class="task-actions">
-                        <button class="task-action complete-task" title="完了">
+                        <button class="task-action complete-task" title="Complete">
                             <i class="fas fa-check"></i>
                         </button>
-                        <button class="task-action edit-task" title="編集">
+                        <button class="task-action edit-task" title="Edit">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button class="task-action delete-task" title="削除">
+                        <button class="task-action delete-task" title="Delete">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
@@ -475,7 +475,7 @@ class EvoTaskManager {
         if (evolutionCycleBtn) {
             evolutionCycleBtn.addEventListener('click', () => {
                 this.runEvolutionCycle();
-                this.showNotification('進化サイクルが実行されました！', 'success');
+                this.showNotification('Evolution cycle executed!', 'success');
             });
         }
         
@@ -549,19 +549,19 @@ class EvoTaskManager {
         
         // Validation
         if (!taskData.title.trim()) {
-            this.showNotification('タスク名を入力してください', 'error');
+            this.showNotification('Please enter a task name', 'error');
             return;
         }
         
         if (!taskData.deadline) {
-            this.showNotification('適応期限を設定してください', 'error');
+            this.showNotification('Please set an adaptation deadline', 'error');
             return;
         }
         
         // Create task
         this.createTask(taskData);
         this.closeTaskModal();
-        this.showNotification('新しいタスクが進化しました！', 'success');
+        this.showNotification('New task has evolved!', 'success');
     }
 
     // ===== Utility Functions =====
@@ -585,9 +585,9 @@ class EvoTaskManager {
 
     getPriorityText(priority) {
         const priorityMap = {
-            high: '高圧力',
-            medium: '中圧力',
-            low: '低圧力'
+            high: 'High Pressure',
+            medium: 'Medium Pressure',
+            low: 'Low Pressure'
         };
         return priorityMap[priority] || priority;
     }
@@ -677,14 +677,14 @@ class EvoTaskManager {
         const avgAdaptation = activeTasks.reduce((sum, t) => sum + t.adaptationScore, 0) / activeTasks.length;
         if (avgAdaptation > 80) {
             insights.push({
-                title: '高適応度環境',
-                description: '現在のタスク群は非常に高い適応度を示しています。新しい挑戦的なタスクを導入することで更なる進化が期待できます。',
+                title: 'High Adaptation Environment',
+                description: 'Current task groups show very high adaptation levels. Further evolution can be expected by introducing new challenging tasks.',
                 confidence: 92
             });
         } else if (avgAdaptation < 50) {
             insights.push({
-                title: '適応度改善必要',
-                description: 'タスク群の適応度が低下しています。環境変化への対応や戦略的変異が必要です。',
+                title: 'Adaptation Improvement Needed',
+                description: 'Task group adaptation is declining. Response to environmental changes and strategic mutations are needed.',
                 confidence: 87
             });
         }
@@ -699,8 +699,8 @@ class EvoTaskManager {
         const maxEnv = Object.keys(envCounts).reduce((a, b) => envCounts[a] > envCounts[b] ? a : b);
         if (envCounts[maxEnv] > activeTasks.length * 0.6) {
             insights.push({
-                title: '環境多様性の推奨',
-                description: `${maxEnv}環境にタスクが集中しています。他の環境でのタスク展開により、リスク分散と新たな機会創出が可能です。`,
+                title: 'Environmental Diversity Recommended',
+                description: `Tasks are concentrated in ${maxEnv} environment. Task deployment in other environments enables risk diversification and new opportunity creation.`,
                 confidence: 78
             });
         }
@@ -711,8 +711,8 @@ class EvoTaskManager {
             const mutationSuccess = mutatedTasks.filter(t => t.adaptationScore > 70).length / mutatedTasks.length;
             if (mutationSuccess > 0.7) {
                 insights.push({
-                    title: '変異戦略成功',
-                    description: '導入された変異の多くが成功しています。同様の変異パターンを他のタスクにも適用することを推奨します。',
+                    title: 'Mutation Strategy Success',
+                    description: 'Many of the introduced mutations are successful. We recommend applying similar mutation patterns to other tasks.',
                     confidence: 85
                 });
             }
@@ -722,15 +722,15 @@ class EvoTaskManager {
         const urgentTasks = activeTasks.filter(t => this.getDaysUntilDeadline(t.deadline) <= 7);
         if (urgentTasks.length > activeTasks.length * 0.3) {
             insights.push({
-                title: '期限圧力警告',
-                description: '多数のタスクが期限に近づいています。リソース集中と優先度調整による生存率向上が必要です。',
+                title: 'Deadline Pressure Warning',
+                description: 'Many tasks are approaching deadlines. Survival rate improvement through resource concentration and priority adjustment is needed.',
                 confidence: 94
             });
         }
         
         return insights.length > 0 ? insights : [{
-            title: '安定した進化環境',
-            description: '現在のタスク生態系は安定しています。新しい変異や環境変化を導入して進化を促進することを検討してください。',
+            title: 'Stable Evolution Environment',
+            description: 'Current task ecosystem is stable. Please consider introducing new mutations or environmental changes to promote evolution.',
             confidence: 75
         }];
     }
@@ -819,10 +819,10 @@ class EvoTaskManager {
 
     showEvolutionInsight() {
         const insights = [
-            '🧬 進化サイクルが完了しました。新しい適応パターンが検出されています。',
-            '🌱 自然選択により最適なタスクが生存し、弱いタスクが淘汰されました。',
-            '🔬 変異プロセスにより新しい戦略的特徴が導入されました。',
-            '📊 環境適応度が更新され、次世代への準備が整いました。'
+            '🧬 Evolution cycle completed. New adaptation patterns detected.',
+            '🌱 Natural selection allowed optimal tasks to survive and weak tasks were eliminated.',
+            '🔬 New strategic features introduced through mutation process.',
+            '📊 Environmental adaptation updated and prepared for next generation.'
         ];
         
         const randomInsight = insights[Math.floor(Math.random() * insights.length)];
@@ -867,7 +867,7 @@ class EvoTaskManager {
         
         this.updateTask(taskId, updates);
         this.closeTaskModal();
-        this.showNotification('タスクが進化しました！', 'success');
+        this.showNotification('Task has evolved!', 'success');
         
         // Reset form submission handler
         const form = document.getElementById('taskForm');

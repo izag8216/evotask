@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,22 +16,22 @@
                 <div class="logo">
                     <i class="fas fa-dna"></i>
                     <h1>Evo Task</h1>
-                    <span class="tagline">進化論マーケティング</span>
+                    <span class="tagline">Evolution Marketing</span>
                 </div>
                 <div class="header-controls">
                     <div class="evolution-stats">
                         <div class="stat">
-                            <span class="stat-label">適応度</span>
+                            <span class="stat-label">Adaptation</span>
                             <span class="stat-value" id="adaptationScore">85%</span>
                         </div>
                         <div class="stat">
-                            <span class="stat-label">進化世代</span>
+                            <span class="stat-label">Generation</span>
                             <span class="stat-value" id="generationCount">7</span>
                         </div>
                     </div>
                     <button class="btn-primary" id="addTaskBtn">
                         <i class="fas fa-plus"></i>
-                        新しいタスク
+                        New Task
                     </button>
                 </div>
             </div>
@@ -43,15 +43,15 @@
                 <div class="dashboard-card">
                     <div class="card-header">
                         <i class="fas fa-chart-line"></i>
-                        <h3>自然選択プロセス</h3>
+                        <h3>Natural Selection Process</h3>
                     </div>
                     <div class="selection-metrics">
                         <div class="metric">
-                            <span class="metric-label">生存タスク</span>
+                            <span class="metric-label">Surviving Tasks</span>
                             <span class="metric-value" id="survivingTasks">12</span>
                         </div>
                         <div class="metric">
-                            <span class="metric-label">淘汰タスク</span>
+                            <span class="metric-label">Eliminated Tasks</span>
                             <span class="metric-value" id="eliminatedTasks">3</span>
                         </div>
                     </div>
@@ -60,26 +60,26 @@
                 <div class="dashboard-card">
                     <div class="card-header">
                         <i class="fas fa-bullseye"></i>
-                        <h3>適応度スコア</h3>
+                        <h3>Adaptation Score</h3>
                     </div>
                     <div class="adaptation-chart">
                         <div class="chart-bar" style="height: 85%"></div>
-                        <div class="chart-label">市場適応度</div>
+                        <div class="chart-label">Market Adaptation</div>
                     </div>
                 </div>
 
                 <div class="dashboard-card">
                     <div class="card-header">
                         <i class="fas fa-random"></i>
-                        <h3>変異・革新</h3>
+                        <h3>Mutation & Innovation</h3>
                     </div>
                     <div class="mutation-tracker">
                         <div class="mutation-item">
-                            <span class="mutation-type">戦略変異</span>
+                            <span class="mutation-type">Strategic Mutations</span>
                             <span class="mutation-count">4</span>
                         </div>
                         <div class="mutation-item">
-                            <span class="mutation-type">戦術進化</span>
+                            <span class="mutation-type">Tactical Evolution</span>
                             <span class="mutation-count">7</span>
                         </div>
                     </div>
@@ -90,17 +90,17 @@
         <!-- Task Evolution Environment -->
         <main class="task-environment">
             <div class="environment-header">
-                <h2>タスク進化環境</h2>
+                <h2>Task Evolution Environment</h2>
                 <div class="environment-controls">
                     <select id="environmentFilter" class="environment-select">
-                        <option value="all">全環境</option>
-                        <option value="competitive">競争環境</option>
-                        <option value="collaborative">協調環境</option>
-                        <option value="adaptive">適応環境</option>
+                        <option value="all">All Environments</option>
+                        <option value="competitive">Competitive Environment</option>
+                        <option value="collaborative">Collaborative Environment</option>
+                        <option value="adaptive">Adaptive Environment</option>
                     </select>
                     <button class="btn-secondary" id="evolutionCycle">
                         <i class="fas fa-sync-alt"></i>
-                        進化サイクル実行
+                        Run Evolution Cycle
                     </button>
                 </div>
             </div>
@@ -110,8 +110,8 @@
                 <div class="ecosystem-section" id="competitiveZone">
                     <div class="zone-header">
                         <i class="fas fa-fire"></i>
-                        <h3>競争環境 - 高圧力ゾーン</h3>
-                        <span class="zone-description">強い選択圧力により最適なタスクのみが生存</span>
+                        <h3>Competitive Environment - High Pressure Zone</h3>
+                        <span class="zone-description">Only optimal tasks survive under strong selection pressure</span>
                     </div>
                     <div class="task-list" id="competitiveTasks"></div>
                 </div>
@@ -119,8 +119,8 @@
                 <div class="ecosystem-section" id="collaborativeZone">
                     <div class="zone-header">
                         <i class="fas fa-handshake"></i>
-                        <h3>協調環境 - 共生ゾーン</h3>
-                        <span class="zone-description">相互利益により共進化するタスク群</span>
+                        <h3>Collaborative Environment - Symbiotic Zone</h3>
+                        <span class="zone-description">Task groups co-evolving through mutual benefits</span>
                     </div>
                     <div class="task-list" id="collaborativeTasks"></div>
                 </div>
@@ -128,8 +128,8 @@
                 <div class="ecosystem-section" id="adaptiveZone">
                     <div class="zone-header">
                         <i class="fas fa-leaf"></i>
-                        <h3>適応環境 - 革新ゾーン</h3>
-                        <span class="zone-description">新しい変異と適応が促進される環境</span>
+                        <h3>Adaptive Environment - Innovation Zone</h3>
+                        <span class="zone-description">Environment promoting new mutations and adaptations</span>
                     </div>
                     <div class="task-list" id="adaptiveTasks"></div>
                 </div>
@@ -140,60 +140,60 @@
         <div class="modal" id="taskModal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3>新しいタスクの進化</h3>
+                    <h3>Evolve New Task</h3>
                     <button class="modal-close" id="closeModal">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
                 <form id="taskForm" class="task-form">
                     <div class="form-group">
-                        <label for="taskTitle">タスク名（種名）</label>
-                        <input type="text" id="taskTitle" placeholder="新種のタスクを命名してください" required>
+                        <label for="taskTitle">Task Name (Species Name)</label>
+                        <input type="text" id="taskTitle" placeholder="Name your new task species" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="taskDescription">進化的特徴</label>
-                        <textarea id="taskDescription" placeholder="このタスクの適応的特徴を記述してください" rows="3"></textarea>
+                        <label for="taskDescription">Evolutionary Features</label>
+                        <textarea id="taskDescription" placeholder="Describe the adaptive features of this task" rows="3"></textarea>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="taskPriority">生存優先度</label>
+                            <label for="taskPriority">Survival Priority</label>
                             <select id="taskPriority">
-                                <option value="high">高圧力（緊急）</option>
-                                <option value="medium">中圧力（重要）</option>
-                                <option value="low">低圧力（通常）</option>
+                                <option value="high">High Pressure (Urgent)</option>
+                                <option value="medium">Medium Pressure (Important)</option>
+                                <option value="low">Low Pressure (Normal)</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="taskEnvironment">進化環境</label>
+                            <label for="taskEnvironment">Evolution Environment</label>
                             <select id="taskEnvironment">
-                                <option value="competitive">競争環境</option>
-                                <option value="collaborative">協調環境</option>
-                                <option value="adaptive">適応環境</option>
+                                <option value="competitive">Competitive Environment</option>
+                                <option value="collaborative">Collaborative Environment</option>
+                                <option value="adaptive">Adaptive Environment</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="taskDeadline">適応期限</label>
+                            <label for="taskDeadline">Adaptation Deadline</label>
                             <input type="date" id="taskDeadline">
                         </div>
 
                         <div class="form-group">
-                            <label for="adaptationScore">初期適応度</label>
+                            <label for="adaptationScore">Initial Adaptation</label>
                             <input type="range" id="adaptationScore" min="0" max="100" value="50">
                             <span class="range-value">50%</span>
                         </div>
                     </div>
 
                     <div class="form-actions">
-                        <button type="button" class="btn-secondary" id="cancelTask">キャンセル</button>
+                        <button type="button" class="btn-secondary" id="cancelTask">Cancel</button>
                         <button type="submit" class="btn-primary">
                             <i class="fas fa-dna"></i>
-                            タスクを進化させる
+                            Evolve Task
                         </button>
                     </div>
                 </form>
@@ -203,23 +203,23 @@
         <!-- Evolution Insights Panel -->
         <aside class="insights-panel" id="insightsPanel">
             <div class="panel-header">
-                <h3>進化的洞察</h3>
+                <h3>Evolution Insights</h3>
                 <button class="panel-toggle" id="toggleInsights">
                     <i class="fas fa-chart-bar"></i>
                 </button>
             </div>
             <div class="insights-content">
                 <div class="insight-card">
-                    <h4>適応パターン分析</h4>
-                    <p>最近の進化傾向から、協調的アプローチが競争的アプローチより38%高い生存率を示しています。</p>
+                    <h4>Adaptation Pattern Analysis</h4>
+                    <p>Recent evolution trends show collaborative approaches have 38% higher survival rates than competitive approaches.</p>
                 </div>
                 <div class="insight-card">
-                    <h4>淘汰リスク予測</h4>
-                    <p>現在の環境条件下で、3つのタスクが淘汰リスクにあります。早急な適応戦略が必要です。</p>
+                    <h4>Elimination Risk Prediction</h4>
+                    <p>Under current environmental conditions, 3 tasks are at elimination risk. Urgent adaptation strategies needed.</p>
                 </div>
                 <div class="insight-card">
-                    <h4>変異推奨</h4>
-                    <p>マーケティング戦略に新しい変異を導入することで、適応度を15%向上させる可能性があります。</p>
+                    <h4>Mutation Recommendation</h4>
+                    <p>Introducing new mutations to marketing strategy could improve adaptation by 15%.</p>
                 </div>
             </div>
         </aside>
